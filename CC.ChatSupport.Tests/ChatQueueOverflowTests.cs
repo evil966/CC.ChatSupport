@@ -10,12 +10,19 @@ public class ChatQueueOverflowTests
     private SupportDbContext GetDbContext()
     {
         var options = new DbContextOptionsBuilder<SupportDbContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .Options;
+                            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                            .Options;
         return new SupportDbContext(options);
     }
 
-    private Agent CreateAgent(string name, Seniority level, TimeSpan start, TimeSpan end, int activeChats = 0)
+    private Agent CreateAgent
+    (
+        string name, 
+        Seniority level, 
+        TimeSpan start, 
+        TimeSpan end, 
+        int activeChats = 0
+    )
     {
         return new Agent
         {
@@ -32,8 +39,15 @@ public class ChatQueueOverflowTests
         var db = GetDbContext();
 
         for (int i = 0; i < 6; i++)
-            db.Agents.Add(CreateAgent($"Overflow{i}", Seniority.Junior, TimeSpan.FromHours(8), TimeSpan.FromHours(17)));
-
+        {
+            db.Agents
+                .Add(CreateAgent(
+                    name: $"Overflow{i}", 
+                    level: Seniority.Junior, 
+                    start: TimeSpan.FromHours(8), 
+                    end: TimeSpan.FromHours(17)
+                ));
+        }
         db.SaveChanges();
 
         var service = new ChatQueueService(db);
@@ -48,7 +62,16 @@ public class ChatQueueOverflowTests
         var db = GetDbContext();
 
         for (int i = 0; i < 6; i++)
-            db.Agents.Add(CreateAgent($"Overflow{i}", Seniority.Junior, TimeSpan.FromHours(8), TimeSpan.FromHours(17), activeChats: 4));
+        {
+            db.Agents
+                .Add(CreateAgent(
+                    name: $"Overflow{i}", 
+                    level: Seniority.Junior, 
+                    start: TimeSpan.FromHours(8), 
+                    end: TimeSpan.FromHours(17), 
+                    activeChats: 4
+                ));
+        }
 
         db.SaveChanges();
 

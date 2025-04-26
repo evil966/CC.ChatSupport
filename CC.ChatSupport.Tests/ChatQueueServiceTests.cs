@@ -10,12 +10,19 @@ public class ChatQueueServiceTests
     private SupportDbContext GetDbContext()
     {
         var options = new DbContextOptionsBuilder<SupportDbContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .Options;
+                            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                            .Options;
         return new SupportDbContext(options);
     }
 
-    private Agent CreateAgent(string name, Seniority level, TimeSpan start, TimeSpan end, int activeChats = 0)
+    private Agent CreateAgent
+    (
+        string name, 
+        Seniority level, 
+        TimeSpan start, 
+        TimeSpan end, 
+        int activeChats = 0
+    )
     {
         return new Agent
         {
@@ -30,7 +37,13 @@ public class ChatQueueServiceTests
     public async Task Should_Enqueue_Chat_And_Assign_Agent()
     {
         var db = GetDbContext();
-        db.Agents.Add(CreateAgent("Agent1", Seniority.Junior, TimeSpan.Zero, TimeSpan.FromHours(23)));
+        db.Agents
+            .Add(CreateAgent(
+                name: "Agent1", 
+                level: Seniority.Junior, 
+                start: TimeSpan.Zero, 
+                end: TimeSpan.FromHours(23)
+            ));
         db.SaveChanges();
 
         var service = new ChatQueueService(db);
@@ -44,7 +57,14 @@ public class ChatQueueServiceTests
     public async Task Should_Not_Assign_When_Agents_At_Max_Capacity()
     {
         var db = GetDbContext();
-        db.Agents.Add(CreateAgent("BusyAgent", Seniority.Junior, TimeSpan.Zero, TimeSpan.FromHours(23), activeChats: 4));
+        db.Agents
+            .Add(CreateAgent(
+                name: "BusyAgent", 
+                level: Seniority.Junior, 
+                start: TimeSpan.Zero, 
+                end: TimeSpan.FromHours(23),
+                activeChats: 4
+            ));
         db.SaveChanges();
 
         var service = new ChatQueueService(db);

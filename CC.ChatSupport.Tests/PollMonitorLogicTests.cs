@@ -9,8 +9,8 @@ public class PollMonitorLogicTests
     private SupportDbContext GetDbContext()
     {
         var options = new DbContextOptionsBuilder<SupportDbContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .Options;
+                            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                            .Options;
         return new SupportDbContext(options);
     }
 
