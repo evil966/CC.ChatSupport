@@ -6,7 +6,10 @@ public static class DbSeeder
 {
     public static async Task SeedAsync(SupportDbContext db)
     {
-        if (db.Agents.Any()) return;
+        if (db.Agents.Any())
+        {
+            return;
+        }
 
         var shifts = new List<Shift>
         {
@@ -51,16 +54,6 @@ public static class DbSeeder
                             Shift = shift2 
                         }
             ));
-
-        // Optional: add test sessions
-        for (int i = 0; i < 5; i++)
-        {
-            db.ChatSessions.Add(new ChatSession
-            {
-                CreatedAt = DateTime.UtcNow.AddMinutes(-i),
-                IsActive = true
-            });
-        }
 
         await db.SaveChangesAsync();
     }

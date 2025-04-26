@@ -14,7 +14,12 @@ public class ChatController : ControllerBase
     private readonly SupportDbContext _db;
     private readonly Channel<PollHeartbeat> _channel;
 
-    public ChatController(ChatQueueService queueService, SupportDbContext db, Channel<PollHeartbeat> channel)
+    public ChatController
+    (
+        ChatQueueService queueService, 
+        SupportDbContext db, 
+        Channel<PollHeartbeat> channel
+    )
     {
         _queueService = queueService;
         _db = db;
@@ -30,7 +35,7 @@ public class ChatController : ControllerBase
             session.Id,
             AssignedAgent 
                 = session.AssignedAgentId.HasValue 
-                ? $"Agent #{session.AssignedAgentId} {session?.AssignedAgent?.Name}" 
+                ? $"Agent #{session.AssignedAgentId}: {session?.AssignedAgent?.Name}" 
                 : "Unassigned"
         });
     }
@@ -40,7 +45,9 @@ public class ChatController : ControllerBase
     {
         var session = await _db.ChatSessions.FindAsync(id);
         if (session is null || !session.IsActive)
+        {
             return NotFound("Session inactive or not found");
+        }
 
         await _channel.Writer.WriteAsync(new PollHeartbeat
         {
@@ -48,6 +55,6 @@ public class ChatController : ControllerBase
             Timestamp = DateTime.UtcNow
         });
 
-        return Ok("OK");
+        return Ok(session);
     }
 }

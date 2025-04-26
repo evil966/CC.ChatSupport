@@ -15,7 +15,8 @@ public class SupportDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ChatSession>()
+        modelBuilder
+            .Entity<ChatSession>()
             .HasOne(c => c.AssignedAgent)
             .WithMany()
             .HasForeignKey(c => c.AssignedAgentId)

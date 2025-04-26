@@ -30,11 +30,12 @@ public class ChatQueueService
 
         if (activeSessions >= maxQueueLength)
         {
-            if (IsOfficeHours(now))
+            if (IsWithinOfficeHours(now))
             {
-                var overflowAgents = await _db.Agents
-                    .Where(a => a.Name.StartsWith("Overflow"))
-                    .ToListAsync();
+                var overflowAgents = await 
+                    _db.Agents
+                        .Where(a => a.Name.StartsWith("Overflow"))
+                        .ToListAsync();
 
                 if (overflowAgents.All(a => a.ActiveChats >= a.MaxConcurrency))
                 {
@@ -75,7 +76,7 @@ public class ChatQueueService
         }
     }
 
-    private bool IsOfficeHours(DateTime now)
+    private bool IsWithinOfficeHours(DateTime now)
     {
         var t = now.TimeOfDay;
         return t >= TimeSpan.FromHours(8) && t <= TimeSpan.FromHours(17);

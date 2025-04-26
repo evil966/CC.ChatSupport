@@ -6,18 +6,20 @@ using Microsoft.Extensions.Hosting;
 using System.Collections.Concurrent;
 using System.Threading.Channels;
 
-
 namespace CC.ChatSupport.Application;
 
 public class PollMonitorService : BackgroundService
 {
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly Channel<PollHeartbeat> _channel;
-
     private readonly ConcurrentDictionary<int, int> _missedPolls = new();
     private readonly ConcurrentDictionary<int, DateTime> _lastPoll = new();
 
-    public PollMonitorService(IServiceScopeFactory scopeFactory, Channel<PollHeartbeat> channel)
+    public PollMonitorService
+    (
+        IServiceScopeFactory scopeFactory, 
+        Channel<PollHeartbeat> channel
+    )
     {
         _scopeFactory = scopeFactory;
         _channel = channel;
@@ -44,13 +46,13 @@ public class PollMonitorService : BackgroundService
         var db = scope.ServiceProvider.GetRequiredService<SupportDbContext>();
 
         var sessions = await db.ChatSessions
-            .Where(s => s.IsActive)
-            .ToListAsync();
+                                .Where(s => s.IsActive)
+                                .ToListAsync();
 
         foreach (var session in sessions)
         {
-            if (_lastPoll.TryGetValue(session.Id, out var last) &&
-                DateTime.UtcNow.Subtract(last).TotalSeconds > 1.5)
+            if (_lastPoll.TryGetValue(session.Id, out var last) 
+                && DateTime.UtcNow.Subtract(last).TotalSeconds > 1.5)
             {
                 _missedPolls.AddOrUpdate(session.Id, 1, (_, count) => count + 1);
 
@@ -60,7 +62,9 @@ public class PollMonitorService : BackgroundService
 
                     var agent = await db.Agents.FindAsync(session.AssignedAgentId);
                     if (agent != null)
+                    {
                         agent.ActiveChats--;
+                    }
                 }
             }
         }

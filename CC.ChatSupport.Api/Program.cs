@@ -1,4 +1,3 @@
-
 using CC.ChatSupport.Application;
 using CC.ChatSupport.Application.Helpers;
 using CC.ChatSupport.Infrastructure;
@@ -29,7 +28,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<SupportDbContext>();
-await DbSeeder.SeedAsync(db);
+    await DbSeeder.SeedAsync(db);
 }
 
 // Middleware
