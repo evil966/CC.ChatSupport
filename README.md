@@ -26,7 +26,7 @@ ChatSupport.sln
 ├── ChatSupport.Infrastructure/ (Infrastructure Layer - EF Core)
 └── ChatSupport.Tests/ (Unit Tests - xUnit)
 
-
+---
 
 ## 🛠️ Requirements
 
