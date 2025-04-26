@@ -24,7 +24,9 @@ public class PollMonitorLogicTests
         var session = await db.ChatSessions.FirstAsync();
         session.MissedPolls++; // Simulate 3rd miss
         if (session.MissedPolls >= 3)
+        {
             session.IsActive = false;
+        }
 
         await db.SaveChangesAsync();
 
