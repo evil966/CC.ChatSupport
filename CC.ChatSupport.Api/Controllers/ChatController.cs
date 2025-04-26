@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-using CC.ChatSupport.Application;
+﻿using CC.ChatSupport.Application;
+using CC.ChatSupport.Application.Helpers;
 using CC.ChatSupport.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Channels;
 
 namespace CC.ChatSupport.Api.Controllers;
 
@@ -12,11 +12,13 @@ public class ChatController : ControllerBase
 {
     private readonly ChatQueueService _queueService;
     private readonly SupportDbContext _db;
+    private readonly Channel<PollHeartbeat> _channel;
 
-    public ChatController(ChatQueueService queueService, SupportDbContext db)
+    public ChatController(ChatQueueService queueService, SupportDbContext db, Channel<PollHeartbeat> channel)
     {
         _queueService = queueService;
         _db = db;
+        _channel = channel;
     }
 
     [HttpPost]
@@ -26,7 +28,10 @@ public class ChatController : ControllerBase
         return Ok(new
         {
             session.Id,
-            AssignedAgent = session.AssignedAgent?.Name ?? "Unassigned"
+            AssignedAgent 
+                = session.AssignedAgentId.HasValue 
+                ? $"Agent #{session.AssignedAgentId} {session?.AssignedAgent?.Name}" 
+                : "Unassigned"
         });
     }
 
@@ -37,8 +42,11 @@ public class ChatController : ControllerBase
         if (session is null || !session.IsActive)
             return NotFound("Session inactive or not found");
 
-        session.MissedPolls = 0;
-        await _db.SaveChangesAsync();
+        await _channel.Writer.WriteAsync(new PollHeartbeat
+        {
+            SessionId = id,
+            Timestamp = DateTime.UtcNow
+        });
 
         return Ok("OK");
     }

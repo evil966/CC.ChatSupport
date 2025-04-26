@@ -1,1 +1,54 @@
-# CC.ChatSupport
+# ChatSupport Backend System
+
+An ASP.NET Core Web API that manages support chat queues, agent assignments, overflow logic, and session monitoring.  
+Built with clean layered architecture: Domain, Application, Infrastructure, and API projects.
+
+---
+
+## ✨ Features
+
+- Queue user chat requests (FIFO order)
+- Assign agents based on seniority, shift, and concurrency
+- Activate overflow agents during office hours if needed
+- Channel-based background service to monitor missed polls
+- Auto-inactivation of dead sessions
+- Seed database with agents, shifts, and sample sessions
+- Swagger UI ready for easy API testing
+- Health monitoring endpoint
+- Dashboard endpoint to view current queue and agent states
+- xUnit test coverage for critical business rules
+
+---
+
+## 📂 Solution Structure
+
+ChatSupport.sln 
+├── ChatSupport.API (Presentation Layer - Web API) 
+├── ChatSupport.Application (Application Layer - Services & Logic) 
+├── ChatSupport.Domain (Domain Layer - Entities) 
+├── ChatSupport.Infrastructure (Infrastructure Layer - EF Core) 
+└── ChatSupport.Tests (Unit Tests - xUnit)
+
+## 🛠️ Requirements
+
+- .NET 8 SDK
+- SQL Server
+- Visual Studio 2022+ 
+
+---
+
+## 🚀 Getting Started
+
+1. **Clone or download** the repository.
+2. Open the solution in **Visual Studio**.
+3. Set `CC.ChatSupport.API` as the **Startup Project**.
+4. Ensure SQL Server is running locally.
+
+## ⚙️ Database Setup
+
+1. Set the `CC.ChatSupport.Api` as the Startup Project
+2. Inside Visual Studio, open **Tools → NuGet Package Manager → Package Manager Console**.
+3. Set Default Project to `CC.ChatSupport.Infrastructure`, then run:
+
+4. Add-Migration InitialCreate -p ChatSupport.Infrastructure -s ChatSupport.API
+5. Update-Database

@@ -1,41 +1,39 @@
 
 using CC.ChatSupport.Application;
+using CC.ChatSupport.Application.Helpers;
 using CC.ChatSupport.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Channels;
 
-namespace CC.ChatSupport.Api
+var builder = WebApplication.CreateBuilder(args);
+
+// Services
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// DB Context
+builder.Services.AddDbContext<SupportDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Channel for Poll Heartbeats
+builder.Services.AddSingleton(Channel.CreateUnbounded<PollHeartbeat>());
+
+// Services
+builder.Services.AddScoped<ChatQueueService>();
+builder.Services.AddHostedService<PollMonitorService>();
+
+var app = builder.Build();
+
+// Database Seeding
+using (var scope = app.Services.CreateScope())
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
-
-            builder.Services.AddControllers();
-            builder.Services.AddDbContext<SupportDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-            builder.Services.AddScoped<ChatQueueService>();
-            builder.Services.AddHostedService<PollMonitorService>();
-
-            // Add services to the container.
-            builder.Services.AddAuthorization();
-
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.MapControllers();
-            app.UseHttpsRedirection();
-            app.UseAuthorization();
-            app.Run();
-        }
-    }
+    var db = scope.ServiceProvider.GetRequiredService<SupportDbContext>();
+await DbSeeder.SeedAsync(db);
 }
+
+// Middleware
+app.UseSwagger();
+app.UseSwaggerUI();
+app.MapControllers();
+app.Run();
