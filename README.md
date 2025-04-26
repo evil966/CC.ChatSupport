@@ -20,11 +20,11 @@ Built with clean layered architecture: Domain, Application, Infrastructure, and 
 ## 📂 Solution Structure
 
 ChatSupport.sln
-├── ChatSupport.API/ (Presentation Layer - Web API)
-├── ChatSupport.Application/ (Application Layer - Services & Logic)
-├── ChatSupport.Domain/ (Domain Layer - Entities)
-├── ChatSupport.Infrastructure/ (Infrastructure Layer - EF Core)
-└── ChatSupport.Tests/ (Unit Tests - xUnit)
+- ChatSupport.API/ (Presentation Layer - Web API)
+- ChatSupport.Application/ (Application Layer - Services & Logic)
+- ChatSupport.Domain/ (Domain Layer - Entities)
+- ChatSupport.Infrastructure/ (Infrastructure Layer - EF Core)
+- ChatSupport.Tests/ (Unit Tests - xUnit)
 
 ---
 
