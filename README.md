@@ -10,11 +10,8 @@ Built with clean layered architecture: Domain, Application, Infrastructure, and 
 - Queue user chat requests (FIFO order)
 - Assign agents based on seniority, shift, and concurrency
 - Activate overflow agents during office hours if needed
-- Channel-based background service to monitor missed polls
-- Auto-inactivation of dead sessions
+- Background service to monitor missed polls
 - Seed database with agents, shifts, and sample sessions
-- Swagger UI ready for easy API testing
-- Health monitoring endpoint
 - Dashboard endpoint to view current queue and agent states
 - xUnit test coverage for critical business rules
 
