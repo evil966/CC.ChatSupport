@@ -5,7 +5,7 @@ Built with clean layered architecture: Domain, Application, Infrastructure, and 
 
 ---
 
-## ✨ Features
+## Features
 
 - Queue user chat requests (FIFO order)
 - Assign agents based on seniority, shift, and concurrency
@@ -17,18 +17,18 @@ Built with clean layered architecture: Domain, Application, Infrastructure, and 
 
 ---
 
-## 📂 Solution Structure
+## Solution Structure
 
-ChatSupport.sln
-- ChatSupport.API/ (Presentation Layer - Web API)
-- ChatSupport.Application/ (Application Layer - Services & Logic)
-- ChatSupport.Domain/ (Domain Layer - Entities)
-- ChatSupport.Infrastructure/ (Infrastructure Layer - EF Core)
-- ChatSupport.Tests/ (Unit Tests - xUnit)
+CC.ChatSupport.sln
+- CC.ChatSupport.API/ (Presentation Layer - Web API)
+- CC.ChatSupport.Application/ (Application Layer - Services & Logic)
+- CC.ChatSupport.Domain/ (Domain Layer - Entities)
+- CC.ChatSupport.Infrastructure/ (Infrastructure Layer - EF Core)
+- CC.ChatSupport.Tests/ (Unit Tests - xUnit)
 
 ---
 
-## 🛠️ Requirements
+## Requirements
 
 - .NET 8 SDK
 - SQL Server
@@ -36,18 +36,18 @@ ChatSupport.sln
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 1. **Clone or download** the repository.
 2. Open the solution in **Visual Studio**.
 3. Set `CC.ChatSupport.API` as the **Startup Project**.
 4. Ensure SQL Server is running locally.
 
-## ⚙️ Database Setup
+## Database Setup
 
 1. Set the `CC.ChatSupport.Api` as the Startup Project
 2. Inside Visual Studio, open **Tools → NuGet Package Manager → Package Manager Console**.
 3. Set Default Project to `CC.ChatSupport.Infrastructure`, then run:
 
-4. Add-Migration InitialCreate -p ChatSupport.Infrastructure -s ChatSupport.API
+4. Add-Migration InitialCreate -p CC.ChatSupport.Infrastructure -s CC.ChatSupport.API
 5. Update-Database
