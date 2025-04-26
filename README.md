@@ -45,9 +45,7 @@ CC.ChatSupport.sln
 
 ## Database Setup
 
-1. Set the `CC.ChatSupport.Api` as the Startup Project
-2. Inside Visual Studio, open **Tools → NuGet Package Manager → Package Manager Console**.
-3. Set Default Project to `CC.ChatSupport.Infrastructure`, then run:
-
-4. Add-Migration InitialCreate -p CC.ChatSupport.Infrastructure -s CC.ChatSupport.API
-5. Update-Database
+1. Inside Visual Studio, open **Tools → NuGet Package Manager → Package Manager Console**.
+2. Set Default Project to `CC.ChatSupport.Infrastructure`, then run:
+3. Add-Migration InitialCreate -p CC.ChatSupport.Infrastructure -s CC.ChatSupport.API
+4. Update-Database
