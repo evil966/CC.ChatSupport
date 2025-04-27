@@ -1,4 +1,5 @@
-﻿namespace CC.ChatSupport.Application.Helpers;
+﻿namespace CC.ChatSupport.Application.Models;
+
 public class PollHeartbeat
 {
     public int SessionId { get; set; }

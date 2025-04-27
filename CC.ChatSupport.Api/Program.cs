@@ -1,5 +1,5 @@
 using CC.ChatSupport.Application;
-using CC.ChatSupport.Application.Helpers;
+using CC.ChatSupport.Application.Models;
 using CC.ChatSupport.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Channels;
