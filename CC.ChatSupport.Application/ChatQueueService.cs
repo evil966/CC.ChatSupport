@@ -1,4 +1,5 @@
-﻿using CC.ChatSupport.Domain;
+﻿using CC.ChatSupport.Application.Helpers;
+using CC.ChatSupport.Domain;
 using CC.ChatSupport.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +8,12 @@ namespace CC.ChatSupport.Application;
 public class ChatQueueService
 {
     private readonly SupportDbContext _db;
+    private readonly AgentChatCoordinatorService _coordinator;
 
-    public ChatQueueService(SupportDbContext db)
+    public ChatQueueService(SupportDbContext db, AgentChatCoordinatorService coordinator)
     {
         _db = db;
+        _coordinator = coordinator;
     }
 
     public async Task<ChatSession> EnqueueChatAsync()
@@ -31,7 +34,7 @@ public class ChatQueueService
 
         if (activeSessions >= maxQueueLength)
         {
-            if (IsWithinOfficeHours(now))
+            if (now.IsWithinOfficeHours())
             {
                 var overflowAgents = await 
                     _db.Agents
@@ -46,7 +49,7 @@ public class ChatQueueService
                     return session;
                 }
 
-                AssignAgentRoundRobin(overflowAgents, session);
+                _coordinator.AssignAgentRoundRobin(overflowAgents, session);
                 _db.ChatSessions.Add(session);
                 await _db.SaveChangesAsync();
                 return session;
@@ -58,28 +61,10 @@ public class ChatQueueService
             return session;
         }
 
-        AssignAgentRoundRobin(teamAgents, session);
+        _coordinator.AssignAgentRoundRobin(teamAgents, session);
         _db.ChatSessions.Add(session);
         await _db.SaveChangesAsync();
         return session;
     }
 
-    private void AssignAgentRoundRobin(List<Agent> agents, ChatSession session)
-    {
-        foreach (var agent in agents.OrderBy(a => a.Seniority))
-        {
-            if (agent.ActiveChats < agent.MaxConcurrency)
-            {
-                agent.ActiveChats++;
-                session.AssignedAgentId = agent.Id;
-                break;
-            }
-        }
-    }
-
-    private bool IsWithinOfficeHours(DateTime now)
-    {
-        var t = now.TimeOfDay;
-        return t >= TimeSpan.FromHours(8) && t <= TimeSpan.FromHours(17);
-    }
 }

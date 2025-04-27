@@ -20,6 +20,7 @@ builder.Services.AddSingleton(Channel.CreateUnbounded<PollHeartbeat>());
 
 // Services
 builder.Services.AddScoped<ChatQueueService>();
+builder.Services.AddScoped<AgentChatCoordinatorService>();
 builder.Services.AddHostedService<PollMonitorService>();
 
 var app = builder.Build();

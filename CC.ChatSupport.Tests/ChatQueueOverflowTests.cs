@@ -1,4 +1,5 @@
 ﻿using CC.ChatSupport.Application;
+using CC.ChatSupport.Application.Helpers;
 using CC.ChatSupport.Domain;
 using CC.ChatSupport.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -35,12 +36,6 @@ public class ChatQueueOverflowTests
         };
     }
 
-    private bool IsWithinOfficeHours(DateTime now)
-    {
-        var t = now.TimeOfDay;
-        return t >= TimeSpan.FromHours(8) && t <= TimeSpan.FromHours(17);
-    }
-
     [Fact]
     public async Task Should_Assign_Overflow_Agent_When_Team_Full()
     {
@@ -59,10 +54,11 @@ public class ChatQueueOverflowTests
         }
         db.SaveChanges();
 
-        var service = new ChatQueueService(db);
+        var coordinator = new AgentChatCoordinatorService();
+        var service = new ChatQueueService(db, coordinator);
         var session = await service.EnqueueChatAsync();
 
-        if (IsWithinOfficeHours(DateTime.UtcNow))
+        if (DateTime.UtcNow.IsWithinOfficeHours())
         {
             Assert.NotNull(session.AssignedAgentId);
         }
@@ -88,7 +84,8 @@ public class ChatQueueOverflowTests
 
         db.SaveChanges();
 
-        var service = new ChatQueueService(db);
+        var coordinator = new AgentChatCoordinatorService();
+        var service = new ChatQueueService(db, coordinator);
         var session = await service.EnqueueChatAsync();
 
         Assert.Null(session.AssignedAgentId);

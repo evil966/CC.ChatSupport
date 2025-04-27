@@ -46,7 +46,8 @@ public class ChatQueueServiceTests
             ));
         db.SaveChanges();
 
-        var service = new ChatQueueService(db);
+        var coordinator = new AgentChatCoordinatorService();
+        var service = new ChatQueueService(db, coordinator);
         var session = await service.EnqueueChatAsync();
 
         Assert.NotNull(session);
@@ -67,7 +68,8 @@ public class ChatQueueServiceTests
             ));
         db.SaveChanges();
 
-        var service = new ChatQueueService(db);
+        var coordinator = new AgentChatCoordinatorService();
+        var service = new ChatQueueService(db, coordinator);
         var session = await service.EnqueueChatAsync();
 
         Assert.Null(session.AssignedAgentId);
@@ -81,7 +83,8 @@ public class ChatQueueServiceTests
         db.Agents.Add(CreateAgent("JuniorAgent", Seniority.Junior, TimeSpan.Zero, TimeSpan.FromHours(23)));
         db.SaveChanges();
 
-        var service = new ChatQueueService(db);
+        var coordinator = new AgentChatCoordinatorService();
+        var service = new ChatQueueService(db, coordinator);
         var session = await service.EnqueueChatAsync();
 
         var agent = await db.Agents.FindAsync(session.AssignedAgentId);
