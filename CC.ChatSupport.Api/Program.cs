@@ -1,4 +1,5 @@
 using CC.ChatSupport.Application;
+using CC.ChatSupport.Application.Interfaces;
 using CC.ChatSupport.Application.Models;
 using CC.ChatSupport.Domain;
 using CC.ChatSupport.Infrastructure;
@@ -21,10 +22,13 @@ builder.Services.AddSingleton(Channel.CreateUnbounded<PollHeartbeat>());
 builder.Services.AddSingleton(Channel.CreateUnbounded<ChatSession>());
 
 // Services
-builder.Services.AddScoped<ChatQueueService>();
-builder.Services.AddHostedService<ChatSessionProcessorService>();
-builder.Services.AddHostedService<AgentChatCoordinatorService>();
-builder.Services.AddHostedService<PollMonitorService>();
+builder.Services.AddSingleton<IChatQueueService, ChatQueueService>();
+builder.Services.AddSingleton<IAgentChatCoordinatorService, AgentChatCoordinatorService>();
+builder.Services.AddHostedService(provider => (AgentChatCoordinatorService)provider.GetRequiredService<IAgentChatCoordinatorService>());
+builder.Services.AddSingleton<IPollMonitorService, PollMonitorService>();
+builder.Services.AddHostedService(provider => (PollMonitorService)provider.GetRequiredService<IPollMonitorService>());
+builder.Services.AddSingleton<IChatSessionProcessorService, ChatSessionProcessorService>();
+builder.Services.AddHostedService(provider => (ChatSessionProcessorService)provider.GetRequiredService<IChatSessionProcessorService>());
 
 var app = builder.Build();
 

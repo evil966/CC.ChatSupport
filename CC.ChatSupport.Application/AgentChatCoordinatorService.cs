@@ -1,4 +1,5 @@
 ﻿using CC.ChatSupport.Application.Helpers;
+using CC.ChatSupport.Application.Interfaces;
 using CC.ChatSupport.Domain;
 using CC.ChatSupport.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace CC.ChatSupport.Application;
 
-public class AgentChatCoordinatorService : BackgroundService
+public class AgentChatCoordinatorService : BackgroundService, IAgentChatCoordinatorService
 {
     private readonly IServiceScopeFactory _scopeFactory;
 
@@ -41,7 +42,7 @@ public class AgentChatCoordinatorService : BackgroundService
         }
     }
 
-    private async Task<ChatSession> AssignAgentToChatAsync(ChatSession session, SupportDbContext db)
+    public async Task<ChatSession> AssignAgentToChatAsync(ChatSession session, SupportDbContext db)
     {
         var now = DateTime.UtcNow;
         var activeSessions = await db.ChatSessions.CountAsync(s => s.IsActive);

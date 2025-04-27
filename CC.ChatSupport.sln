@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CC.ChatSupport.Domain", "CC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CC.ChatSupport.Infrastructure", "CC.ChatSupport.Infrastructure\CC.ChatSupport.Infrastructure.csproj", "{F2E5AE56-A161-4378-B2FD-6B6A2215CFD6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CC.ChatSupport.Tests", "CC.ChatSupport.Tests\CC.ChatSupport.Tests.csproj", "{FAF306C6-4646-44A2-910A-105E85B56AFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F2E5AE56-A161-4378-B2FD-6B6A2215CFD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2E5AE56-A161-4378-B2FD-6B6A2215CFD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2E5AE56-A161-4378-B2FD-6B6A2215CFD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAF306C6-4646-44A2-910A-105E85B56AFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAF306C6-4646-44A2-910A-105E85B56AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAF306C6-4646-44A2-910A-105E85B56AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAF306C6-4646-44A2-910A-105E85B56AFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,4 @@
-﻿using CC.ChatSupport.Application;
+﻿using CC.ChatSupport.Application.Interfaces;
 using CC.ChatSupport.Application.Models;
 using CC.ChatSupport.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +11,13 @@ namespace CC.ChatSupport.Api.Controllers;
 [Route("api/[controller]")]
 public class ChatController : ControllerBase
 {
-    private readonly ChatQueueService _queueService;
+    private readonly IChatQueueService _queueService;
     private readonly SupportDbContext _db;
     private readonly Channel<PollHeartbeat> _channel;
 
     public ChatController
     (
-        ChatQueueService queueService, 
+        IChatQueueService queueService, 
         SupportDbContext db, 
         Channel<PollHeartbeat> channel
     )

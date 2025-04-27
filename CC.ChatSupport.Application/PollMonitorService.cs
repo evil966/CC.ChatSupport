@@ -1,4 +1,5 @@
-﻿using CC.ChatSupport.Application.Models;
+﻿using CC.ChatSupport.Application.Interfaces;
+using CC.ChatSupport.Application.Models;
 using CC.ChatSupport.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +9,7 @@ using System.Threading.Channels;
 
 namespace CC.ChatSupport.Application;
 
-public class PollMonitorService : BackgroundService
+public class PollMonitorService : BackgroundService, IPollMonitorService
 {
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly Channel<PollHeartbeat> _channel;
@@ -40,7 +41,7 @@ public class PollMonitorService : BackgroundService
         }
     }
 
-    private async Task CheckInactiveSessions()
+    public async Task CheckInactiveSessions()
     {
         using var scope = _scopeFactory.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<SupportDbContext>();

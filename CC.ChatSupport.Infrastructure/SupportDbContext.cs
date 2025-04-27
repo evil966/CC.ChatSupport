@@ -9,6 +9,10 @@ public class SupportDbContext : DbContext
     public DbSet<Agent> Agents => Set<Agent>();
     public DbSet<Shift> Shifts => Set<Shift>();
 
+    public SupportDbContext() 
+    {
+    }
+
     public SupportDbContext(DbContextOptions<SupportDbContext> options) : base(options)
     {
     }

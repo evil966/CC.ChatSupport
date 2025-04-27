@@ -1,4 +1,5 @@
-﻿using CC.ChatSupport.Domain;
+﻿using CC.ChatSupport.Application.Interfaces;
+using CC.ChatSupport.Domain;
 using CC.ChatSupport.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -6,7 +7,7 @@ using System.Threading.Channels;
 
 namespace CC.ChatSupport.Application;
 
-public class ChatSessionProcessorService : BackgroundService
+public class ChatSessionProcessorService : BackgroundService, IChatSessionProcessorService
 {
     private readonly Channel<ChatSession> _chatSessionChannel;
     private readonly IServiceScopeFactory _scopeFactory;

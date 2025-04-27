@@ -1,9 +1,10 @@
-﻿using CC.ChatSupport.Domain;
+﻿using CC.ChatSupport.Application.Interfaces;
+using CC.ChatSupport.Domain;
 using System.Threading.Channels;
 
 namespace CC.ChatSupport.Application;
 
-public class ChatQueueService
+public class ChatQueueService : IChatQueueService
 {
     private readonly Channel<ChatSession> _chatSessionChannel;
 
