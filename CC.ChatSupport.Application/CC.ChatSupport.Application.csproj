@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ChatQueueServiceOld.cs" />
     <Compile Remove="RetryAssignmentService.cs" />
   </ItemGroup>
 

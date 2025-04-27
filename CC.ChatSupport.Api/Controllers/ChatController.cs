@@ -33,10 +33,7 @@ public class ChatController : ControllerBase
         return Ok(new
         {
             session.Id,
-            AssignedAgent 
-                = session.AssignedAgentId.HasValue 
-                ? $"Agent #{session.AssignedAgentId}: {session?.AssignedAgent?.Name}" 
-                : "Unassigned"
+            Status = "Chat Session created. Waiting for agent assignment..."
         });
     }
 

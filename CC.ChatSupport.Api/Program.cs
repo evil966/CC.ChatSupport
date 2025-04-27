@@ -1,6 +1,8 @@
 using CC.ChatSupport.Application;
 using CC.ChatSupport.Application.Models;
+using CC.ChatSupport.Domain;
 using CC.ChatSupport.Infrastructure;
+using ChatSupport.Application;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Channels;
 
@@ -17,10 +19,12 @@ builder.Services.AddDbContext<SupportDbContext>(options =>
 
 // Channel for Poll Heartbeats
 builder.Services.AddSingleton(Channel.CreateUnbounded<PollHeartbeat>());
+builder.Services.AddSingleton(Channel.CreateUnbounded<ChatSession>());
 
 // Services
 builder.Services.AddScoped<ChatQueueService>();
-builder.Services.AddScoped<AgentChatCoordinatorService>();
+builder.Services.AddHostedService<ChatSessionProcessorService>();
+builder.Services.AddHostedService<AgentChatCoordinatorService>();
 builder.Services.AddHostedService<PollMonitorService>();
 
 var app = builder.Build();

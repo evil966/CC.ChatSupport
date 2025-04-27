@@ -13,7 +13,6 @@ Built with clean layered architecture: Domain, Application, Infrastructure, and 
 - Background service to monitor missed polls
 - Seed database with agents, shifts, and sample sessions
 - Dashboard endpoint to view current queue and agent states
-- xUnit test coverage for critical business rules
 
 ---
 
@@ -24,7 +23,6 @@ CC.ChatSupport.sln
 - CC.ChatSupport.Application/ (Application Layer - Services & Logic)
 - CC.ChatSupport.Domain/ (Domain Layer - Entities)
 - CC.ChatSupport.Infrastructure/ (Infrastructure Layer - EF Core)
-- CC.ChatSupport.Tests/ (Unit Tests - xUnit)
 
 ---
 
