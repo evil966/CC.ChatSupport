@@ -51,7 +51,8 @@ public static class DbSeeder
                         { 
                             Name = $"Overflow{i}", 
                             Seniority = Seniority.Junior, 
-                            Shift = shift2 
+                            Shift = shift2,
+                            IsAuxiliary = true
                         }
             ));
 

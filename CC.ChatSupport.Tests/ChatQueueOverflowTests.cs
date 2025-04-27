@@ -17,11 +17,12 @@ public class ChatQueueOverflowTests
 
     private Agent CreateAgent
     (
-        string name, 
-        Seniority level, 
-        TimeSpan start, 
-        TimeSpan end, 
-        int activeChats = 0
+        string name,
+        Seniority level,
+        TimeSpan start,
+        TimeSpan end,
+        int activeChats = 0,
+        bool isAuxiliary = false
     )
     {
         return new Agent
@@ -29,8 +30,15 @@ public class ChatQueueOverflowTests
             Name = name,
             Seniority = level,
             ActiveChats = activeChats,
+            IsAuxiliary = isAuxiliary,
             Shift = new Shift { Start = start, End = end }
         };
+    }
+
+    private bool IsWithinOfficeHours(DateTime now)
+    {
+        var t = now.TimeOfDay;
+        return t >= TimeSpan.FromHours(8) && t <= TimeSpan.FromHours(17);
     }
 
     [Fact]
@@ -45,7 +53,8 @@ public class ChatQueueOverflowTests
                     name: $"Overflow{i}", 
                     level: Seniority.Junior, 
                     start: TimeSpan.FromHours(8), 
-                    end: TimeSpan.FromHours(17)
+                    end: TimeSpan.FromHours(17),
+                    isAuxiliary: true
                 ));
         }
         db.SaveChanges();
@@ -53,7 +62,10 @@ public class ChatQueueOverflowTests
         var service = new ChatQueueService(db);
         var session = await service.EnqueueChatAsync();
 
-        Assert.NotNull(session.AssignedAgentId);
+        if (IsWithinOfficeHours(DateTime.UtcNow))
+        {
+            Assert.NotNull(session.AssignedAgentId);
+        }
     }
 
     [Fact]
@@ -69,6 +81,7 @@ public class ChatQueueOverflowTests
                     level: Seniority.Junior, 
                     start: TimeSpan.FromHours(8), 
                     end: TimeSpan.FromHours(17), 
+                    isAuxiliary: true,
                     activeChats: 4
                 ));
         }

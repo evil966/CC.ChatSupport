@@ -33,6 +33,9 @@ namespace CC.ChatSupport.Infrastructure.Migrations
                     b.Property<int>("ActiveChats")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsAuxiliary")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

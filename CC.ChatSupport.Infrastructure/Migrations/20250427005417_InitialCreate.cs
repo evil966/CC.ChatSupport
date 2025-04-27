@@ -34,7 +34,8 @@ namespace CC.ChatSupport.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Seniority = table.Column<int>(type: "int", nullable: false),
                     ActiveChats = table.Column<int>(type: "int", nullable: false),
-                    ShiftId = table.Column<int>(type: "int", nullable: false)
+                    ShiftId = table.Column<int>(type: "int", nullable: false),
+                    IsAuxiliary = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

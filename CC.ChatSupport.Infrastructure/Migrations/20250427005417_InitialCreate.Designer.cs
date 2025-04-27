@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CC.ChatSupport.Infrastructure.Migrations
 {
     [DbContext(typeof(SupportDbContext))]
-    [Migration("20250425031922_InitialCreate")]
+    [Migration("20250427005417_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -35,6 +35,9 @@ namespace CC.ChatSupport.Infrastructure.Migrations
 
                     b.Property<int>("ActiveChats")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsAuxiliary")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

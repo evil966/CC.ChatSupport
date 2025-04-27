@@ -10,6 +10,7 @@ public class Agent
     public int ActiveChats { get; set; }
     public Shift Shift { get; set; }
     public int ShiftId { get; set; }
+    public bool IsAuxiliary { get; set; } = false;
 
     public double Efficiency => Seniority switch
     {

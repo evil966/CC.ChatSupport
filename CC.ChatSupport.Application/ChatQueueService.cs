@@ -21,9 +21,10 @@ public class ChatQueueService
         var activeSessions = await _db.ChatSessions.CountAsync(s => s.IsActive);
 
         var nowTime = now.TimeOfDay;
-        var teamAgents = await _db.Agents.Include(a => a.Shift)
-                                         .Where(a => nowTime >= a.Shift.Start && nowTime <= a.Shift.End)
-                                         .ToListAsync();
+        var teamAgents = await _db.Agents
+                .Include(a => a.Shift)
+                .Where(a => nowTime >= a.Shift.Start && nowTime <= a.Shift.End)
+                .ToListAsync();
 
         var normalCapacity = teamAgents.Sum(a => a.MaxConcurrency);
         var maxQueueLength = (int)(normalCapacity * 1.5);
@@ -34,7 +35,7 @@ public class ChatQueueService
             {
                 var overflowAgents = await 
                     _db.Agents
-                        .Where(a => a.Name.StartsWith("Overflow"))
+                        .Where(a => a.IsAuxiliary)
                         .ToListAsync();
 
                 if (overflowAgents.All(a => a.ActiveChats >= a.MaxConcurrency))
