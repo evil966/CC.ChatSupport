@@ -2,7 +2,6 @@ using CC.ChatSupport.Application;
 using CC.ChatSupport.Application.Models;
 using CC.ChatSupport.Domain;
 using CC.ChatSupport.Infrastructure;
-using ChatSupport.Application;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Channels;
 

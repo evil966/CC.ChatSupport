@@ -2,6 +2,7 @@
 using CC.ChatSupport.Application.Models;
 using CC.ChatSupport.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Channels;
 
 namespace CC.ChatSupport.Api.Controllers;
@@ -34,6 +35,29 @@ public class ChatController : ControllerBase
         {
             session.Id,
             Status = "Chat Session created. Waiting for agent assignment..."
+        });
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetChatStatus(int id)
+    {
+        var session = await _db.ChatSessions
+                                .Include(s => s.AssignedAgent)
+                                .FirstOrDefaultAsync(s => s.Id == id);
+
+        if (session == null)
+        {
+            return NotFound("Chat session not found");
+        }
+
+        return Ok(new
+        {
+            session.Id,
+            session.IsActive,
+            AssignedAgent = session.AssignedAgent != null ? session.AssignedAgent.Name : null,
+            Status = session.AssignedAgent != null
+                ? "Agent assigned"
+                : "Waiting for agent assignment..."
         });
     }
 
